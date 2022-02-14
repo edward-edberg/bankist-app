@@ -197,26 +197,35 @@ const updateUI = function (acc) {
 };
 
 const startLogOutTimer = function () {
-  // set time to 5 minutes
-  let time = 100;
-  // call the timer every second
-  setInterval(function () {
+  const tick = function () {
     const min = String(Math.floor(time / 60)).padStart(2, 0);
-    const sec = time % 60;
+    const sec = String(time % 60).padStart(2, 0);
     // in each call, print remaining time
     labelTimer.textContent = `${min}:${sec}`;
-    time -= 1;
+
     // when 0 seconds, log out
-  }, 1000);
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+
+    time -= 1;
+  };
+  // set time to 5 minutes
+  let time = 10;
+  // call the timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
 };
 
 ///////////////////////////////////////
 // Event handlers
 let currentAccount;
 // Fake login
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 // const now = new Date();
 // const options = {
